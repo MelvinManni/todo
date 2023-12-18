@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
         },
         child: BlocListener<AppBloc, AppState>(
           listener: (context, state) {
-            if (state.error != null) {
+            if (state.status == Status.failure) {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(state.error.toString()),
@@ -173,7 +173,18 @@ class _AddTaskButton extends StatelessWidget {
     final status = context.select((TaskCubit cubit) => cubit.state.status);
     final userId = context.select((AppBloc bloc) => bloc.state.user.id);
 
-    return TextButton(
+    return BlocListener<TaskCubit, TaskState>(
+      listener: (context, state) {
+        if (state.status == TaskStatus.failure) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text(state.error.toString()),
+              backgroundColor: Colors.red,
+            ),
+          );
+        }
+      },
+      child: TextButton(
         onPressed: () {
           context
               .read<TaskCubit>()
@@ -185,7 +196,9 @@ class _AddTaskButton extends StatelessWidget {
             }
           });
         },
-        child: Text(status == TaskStatus.submitting ? "Submitting..." : "Add"));
+        child: Text(status == TaskStatus.submitting ? "Submitting..." : "Add"),
+      ),
+    );
   }
 }
 

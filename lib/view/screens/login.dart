@@ -20,12 +20,24 @@ class LoginScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Login'),
-        ),
-        body: GestureDetector(
-          onTap: () {
-            FocusManager.instance.primaryFocus?.unfocus();
+      appBar: AppBar(
+        title: const Text('Login'),
+      ),
+      body: GestureDetector(
+        onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+        child: BlocListener<LoginCubit, LoginState>(
+          
+          listener: (context, state) {
+            if (state.status == LoginStatus.failure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.error.toString()),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
           },
           child: ListenForAuthStatusChange(
             child: SingleChildScrollView(
@@ -58,7 +70,9 @@ class LoginScreen extends StatelessWidget {
               ),
             )),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 

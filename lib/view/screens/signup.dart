@@ -20,12 +20,23 @@ class SignUpScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final status = context.select((SignupCubit cubit) => cubit.state.status);
     return Scaffold(
-        appBar: AppBar(
-          title: const Text('Sign Up'),
-        ),
-        body: GestureDetector(
-          onTap: () {
-            FocusManager.instance.primaryFocus?.unfocus();
+      appBar: AppBar(
+        title: const Text('Sign Up'),
+      ),
+      body: GestureDetector(
+        onTap: () {
+          FocusManager.instance.primaryFocus?.unfocus();
+        },
+        child: BlocListener<SignupCubit, SignupState>(
+          listener: (context, state) {
+            if (state.status == SignupStatus.failure) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text(state.error.toString()),
+                  backgroundColor: Colors.red,
+                ),
+              );
+            }
           },
           child: ListenForAuthStatusChange(
             child: SingleChildScrollView(
@@ -47,7 +58,9 @@ class SignUpScreen extends StatelessWidget {
                   )),
             ),
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
 
