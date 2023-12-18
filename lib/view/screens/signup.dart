@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/cubit/signup_cubit/signup_cubit.dart';
+import 'package:todo/view/app_view.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -25,21 +26,23 @@ class SignUpScreen extends StatelessWidget {
           onTap: () {
             FocusManager.instance.primaryFocus?.unfocus();
           },
-          child: SingleChildScrollView(
-            child: Padding(
-                padding:
-                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
-                child: Column(
-                  children: [
-                    const _EmailField(),
-                    const _PasswordField(),
-                    TextButton(
-                        onPressed: () {
-                          context.read<SignupCubit>().signUpWithCredentials();
-                        },
-                        child: const Text("Sign Up"))
-                  ],
-                )),
+          child: ListenForAuthStatusChange(
+            child: SingleChildScrollView(
+              child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 20),
+                  child: Column(
+                    children: [
+                      const _EmailField(),
+                      const _PasswordField(),
+                      TextButton(
+                          onPressed: () {
+                            context.read<SignupCubit>().signUpWithCredentials();
+                          },
+                          child: const Text("Sign Up"))
+                    ],
+                  )),
+            ),
           ),
         ));
   }

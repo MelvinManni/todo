@@ -9,27 +9,42 @@ class AppView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AppBloc, AppState>(
-      listener: (context, state) {
-        if (state.authStatus == AuthStatus.unauthenticated) {
-          Navigator.of(context).pushAndRemoveUntil(LoginScreen.route(), (route) => false);
-        } else if (state.authStatus == AuthStatus.authenticated) {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (_) => BlocProvider.value(
-                        value: BlocProvider.of<AppBloc>(context),
-                        child: const HomeScreen(),
-                      )),
-              (route) => false);
-        }
-      },
+    return const ListenForAuthStatusChange(
       child: Material(
-        color: Colors.primaries[0],
-        child: const Center(
+        color: Colors.blue,
+        child: Center(
           child: SizedBox(
-              width: 40, height: 40, child: CircularProgressIndicator()),
+              width: 40,
+              height: 40,
+              child: CircularProgressIndicator(
+                color: Colors.white,
+              )),
         ),
       ),
     );
+  }
+}
+
+class ListenForAuthStatusChange extends StatelessWidget {
+  const ListenForAuthStatusChange({
+    super.key,
+    required this.child,
+  });
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AppBloc, AppState>(
+        listener: (context, state) {
+          if (state.authStatus == AuthStatus.unauthenticated) {
+            Navigator.of(context)
+                .pushAndRemoveUntil(LoginScreen.route(), (route) => false);
+          } else if (state.authStatus == AuthStatus.authenticated) {
+            Navigator.of(context)
+                .pushAndRemoveUntil(HomeScreen.route(), (route) => false);
+          }
+        },
+        child: child);
   }
 }

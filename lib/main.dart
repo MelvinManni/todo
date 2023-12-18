@@ -65,6 +65,7 @@ class MainApp extends StatelessWidget {
                 create: (context) => SignupCubit(
                       authRepository: context.read<AuthRepository>(),
                     )),
+            BlocProvider(create: (context) => TaskCubit()),
           ],
           child: MaterialApp(
             title: 'Todo',

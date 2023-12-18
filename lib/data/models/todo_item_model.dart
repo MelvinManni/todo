@@ -3,7 +3,7 @@ class TodoItem {
   String user = "";
   String task = "";
 
-  TodoItem({ this.id = "", required this.user, required this.task});
+  TodoItem({this.id = "", this.user = "", required this.task});
 
   TodoItem.fromData(Map<String, dynamic> data) {
     id = data['id'] ?? "";

@@ -5,7 +5,7 @@ import 'package:todo/data/repository/repository.dart';
 part 'login_state.dart';
 
 class LoginCubit extends Cubit<LoginState> {
-  AuthRepository _authRepository;
+  final AuthRepository _authRepository;
   LoginCubit({required AuthRepository authRepository})
       : _authRepository = authRepository,
         super(const LoginInitial());
@@ -25,6 +25,7 @@ class LoginCubit extends Cubit<LoginState> {
           email: state.email, password: state.password);
       emit(state.copyWith(status: LoginStatus.success));
     } catch (e) {
+      print(e);
       emit(state.copyWith(status: LoginStatus.error));
     }
   }
