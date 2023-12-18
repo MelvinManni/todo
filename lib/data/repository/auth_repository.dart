@@ -19,7 +19,7 @@ class AuthRepository {
     );
   }
 
-  Future<void> signUp({required String email, required String password}) async {
+  Future<void> signUpWithCredentials({required String email, required String password}) async {
     await _firebaseAuth.createUserWithEmailAndPassword(
       email: email,
       password: password,
