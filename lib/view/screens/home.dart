@@ -21,8 +21,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final user = context.select((AppState state) => state.user);
-    // final task = context.select((TaskState state) => state.task);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Home'),
@@ -47,7 +45,8 @@ class AddTaskFLoatButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final task = context.select((TaskState state) => state.task);
+    final user = context.select((AppBloc bloc) => bloc.state.user);
+    final task = context.select((TaskCubit cubit) => cubit.state.task);
     return FloatingActionButton(
       onPressed: () {
         showDialog(
@@ -59,7 +58,6 @@ class AddTaskFLoatButton extends StatelessWidget {
                     children: [
                       _TaskField(),
                       SizedBox(height: 20),
-                      _AddTaskButton()
                     ],
                   ),
                   actions: [
@@ -67,16 +65,11 @@ class AddTaskFLoatButton extends StatelessWidget {
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
-                        child: const Text('Cancel')),
-                    TextButton(
-                      onPressed: () {
-                        context
-                            .read<AppBloc>()
-                            .add(AppTodoItemAdded(TodoItem(task: "Hello")));
-                        Navigator.of(context).pop();
-                      },
-                      child: const Text('Add'),
-                    ),
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(color: Colors.red),
+                        )),
+                    const _AddTaskButton()
                   ],
                 ));
       },
@@ -90,13 +83,11 @@ class _AddTaskButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final task = context.select((AppState state) => state.user);
+    final task = context.select((TaskCubit cubit) => cubit.state.task);
     print(task);
     return ElevatedButton(
         onPressed: () {
-          context
-              .read<AppBloc>()
-              .add(AppTodoItemAdded(TodoItem(task: "task")));
+          context.read<AppBloc>().add(AppTodoItemAdded(TodoItem(task: task)));
           Navigator.of(context).pop();
         },
         child: const Text("Add"));

@@ -50,35 +50,37 @@ class MainApp extends StatelessWidget {
         ),
       ],
       child: MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => AppBloc(
-                authRepository: context.read<AuthRepository>(),
-                todoRepository: context.read<TodoRepository>(),
-              ),
+        providers: [
+          BlocProvider(
+            create: (context) => AppBloc(
+              authRepository: context.read<AuthRepository>(),
+              todoRepository: context.read<TodoRepository>(),
             ),
-            BlocProvider(
-                create: (context) => LoginCubit(
-                      authRepository: context.read<AuthRepository>(),
-                    )),
-            BlocProvider(
-                create: (context) => SignupCubit(
-                      authRepository: context.read<AuthRepository>(),
-                    )),
-            BlocProvider(create: (context) => TaskCubit()),
-          ],
-          child: MaterialApp(
-            title: 'Todo',
-            theme: ThemeData(
-              primarySwatch: Colors.blue,
+          ),
+          BlocProvider(
+              create: (context) => LoginCubit(
+                    authRepository: context.read<AuthRepository>(),
+                  )),
+          BlocProvider(
+            create: (context) => SignupCubit(
+              authRepository: context.read<AuthRepository>(),
             ),
-            home: GestureDetector(
-              onTap: () {
-                FocusManager.instance.primaryFocus?.unfocus();
-              },
-              child: const AppView(),
-            ),
-          )),
+          ),
+          BlocProvider(create: (context) => TaskCubit()),
+        ],
+        child: MaterialApp(
+          title: 'Todo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: GestureDetector(
+            onTap: () {
+              FocusManager.instance.primaryFocus?.unfocus();
+            },
+            child: const AppView(),
+          ),
+        ),
+      ),
     );
   }
 }
