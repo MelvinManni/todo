@@ -20,7 +20,7 @@ class SignupCubit extends Cubit<SignupState> {
 
   Future<void> signUpWithCredentials() async {
     if (state.status == SignupStatus.submitting) return;
-    emit(state.copyWith(status: SignupStatus.submitting));
+    emit(state.copyWith(status: SignupStatus.submitting, error: null));
     try {
       await _authRepository.signUpWithCredentials(
           email: state.email, password: state.password);

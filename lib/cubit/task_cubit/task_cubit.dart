@@ -20,7 +20,7 @@ class TaskCubit extends Cubit<TaskState> {
     required String task,
   }) async {
     if (task.isEmpty || state.status == TaskStatus.submitting) return null;
-    emit(TaskState(task: task, status: TaskStatus.submitting));
+    emit(TaskState(task: task, status: TaskStatus.submitting, error: null));
     try {
       final todoItem = await _todoRepository.add(userId: userId, task: task);
       emit(const TaskState(task: '', status: TaskStatus.success,));

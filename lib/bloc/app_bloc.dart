@@ -39,7 +39,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       emit(const AppState(authStatus: AuthStatus.unauthenticated));
     });
     on<AppTodoItemsRequested>((event, emit) async {
-      emit(state.copyWith(status: Status.loading));
+      emit(state.copyWith(status: Status.loading, error: null));
 
       await _todoRepository
           .todos(userId: event.user)
@@ -52,8 +52,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       emit(state.copyWith(
           status: Status.success, todos: [...state.todoItems, event.todoItem]));
     });
+
     on<AppTodoItemDeleted>((event, emit) async {
-      emit(state.copyWith(status: Status.loading));
+      emit(state.copyWith(status: Status.loading, error: null));
       await _todoRepository
           .delete(userId: event.todoItem.user, todoId: event.todoItem.id)
           .then((value) => {
