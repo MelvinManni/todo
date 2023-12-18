@@ -18,6 +18,7 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final status = context.select((SignupCubit cubit) => cubit.state.status);
     return Scaffold(
         appBar: AppBar(
           title: const Text('Sign Up'),
@@ -39,7 +40,9 @@ class SignUpScreen extends StatelessWidget {
                           onPressed: () {
                             context.read<SignupCubit>().signUpWithCredentials();
                           },
-                          child: const Text("Sign Up"))
+                          child: Text(status == SignupStatus.submitting
+                              ? "Submitting..."
+                              : "Sign Up"))
                     ],
                   )),
             ),

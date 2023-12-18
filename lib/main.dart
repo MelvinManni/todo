@@ -72,6 +72,14 @@ class MainApp extends StatelessWidget {
           title: 'Todo',
           theme: ThemeData(
             primarySwatch: Colors.blue,
+            textButtonTheme: TextButtonThemeData(
+              style: TextButton.styleFrom(
+                backgroundColor: Colors.blue,
+                foregroundColor: Colors.white,
+                textStyle: const TextStyle(color: Colors.white),
+                minimumSize: const Size.fromHeight(40),
+              ),
+            ),
           ),
           home: GestureDetector(
             onTap: () {

@@ -45,8 +45,6 @@ class AddTaskFLoatButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = context.select((AppBloc bloc) => bloc.state.user);
-    final task = context.select((TaskCubit cubit) => cubit.state.task);
     return FloatingActionButton(
       onPressed: () {
         showDialog(
@@ -61,15 +59,22 @@ class AddTaskFLoatButton extends StatelessWidget {
                     ],
                   ),
                   actions: [
-                    TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text(
-                          'Cancel',
-                          style: TextStyle(color: Colors.red),
-                        )),
-                    const _AddTaskButton()
+                    Expanded(
+                      child: TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: Colors.red,
+                          ),
+                          child: const Text(
+                            'Cancel',
+                          )),
+                    ),
+                    const SizedBox(
+                      width: 20,
+                    ),
+                    const Expanded(child: _AddTaskButton())
                   ],
                 ));
       },
@@ -84,8 +89,7 @@ class _AddTaskButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final task = context.select((TaskCubit cubit) => cubit.state.task);
-    print(task);
-    return ElevatedButton(
+    return TextButton(
         onPressed: () {
           context.read<AppBloc>().add(AppTodoItemAdded(TodoItem(task: task)));
           Navigator.of(context).pop();
@@ -99,9 +103,9 @@ class _TaskField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final task = context.select((TaskState state) => state.task);
+    final task = context.select((TaskCubit cubit) => cubit.state.task);
     return TextFormField(
-      // initialValue: task,
+      initialValue: task,
       decoration: const InputDecoration(
         labelText: "Task",
         hintText: 'Enter your task',
