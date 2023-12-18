@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/cubit/signup_cubit/signup_cubit.dart';
-import 'package:todo/view/app_view.dart';
+import 'package:todo/view/screens/login.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
@@ -37,7 +37,7 @@ class SignUpScreen extends StatelessWidget {
               );
             }
           },
-          child: ListenForAuthStatusChange(
+          child: ListenForAuthenticatedState(
             child: SingleChildScrollView(
               child: Padding(
                   padding: const EdgeInsets.symmetric(

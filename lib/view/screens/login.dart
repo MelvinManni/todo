@@ -2,8 +2,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo/bloc/app_bloc.dart';
 import 'package:todo/cubit/login_cubit/login_cubit.dart';
-import 'package:todo/view/app_view.dart';
+import 'package:todo/view/screens/home.dart';
 import 'package:todo/view/screens/signup.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -28,7 +29,6 @@ class LoginScreen extends StatelessWidget {
           FocusManager.instance.primaryFocus?.unfocus();
         },
         child: BlocListener<LoginCubit, LoginState>(
-          
           listener: (context, state) {
             if (state.status == LoginStatus.failure) {
               ScaffoldMessenger.of(context).showSnackBar(
@@ -39,7 +39,7 @@ class LoginScreen extends StatelessWidget {
               );
             }
           },
-          child: ListenForAuthStatusChange(
+          child: ListenForAuthenticatedState(
             child: SingleChildScrollView(
                 child: Padding(
               padding:
@@ -124,6 +124,28 @@ class _EmailField extends StatelessWidget {
         labelText: "Email Address",
         hintText: 'Enter your email',
       ),
+    );
+  }
+}
+
+class ListenForAuthenticatedState extends StatelessWidget {
+  const ListenForAuthenticatedState({super.key, required this.child});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AppBloc, AppState>(
+      listenWhen: (prev, curr) =>
+          prev.authStatus != curr.authStatus &&
+          curr.authStatus == AuthStatus.authenticated,
+      listener: (context, state) {
+        if (state.authStatus == AuthStatus.authenticated) {
+          Navigator.of(context)
+              .pushAndRemoveUntil(HomeScreen.route(), (route) => false);
+        }
+      },
+      child: child,
     );
   }
 }

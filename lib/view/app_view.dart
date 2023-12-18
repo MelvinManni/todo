@@ -36,15 +36,17 @@ class ListenForAuthStatusChange extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AppBloc, AppState>(
-        listener: (context, state) {
-          if (state.authStatus == AuthStatus.unauthenticated) {
-            Navigator.of(context)
-                .pushAndRemoveUntil(LoginScreen.route(), (route) => false);
-          } else if (state.authStatus == AuthStatus.authenticated) {
-            Navigator.of(context)
-                .pushAndRemoveUntil(HomeScreen.route(), (route) => false);
-          }
-        },
-        child: child);
+      listenWhen: (prev, curr) => prev.authStatus != curr.authStatus,
+      listener: (context, state) {
+        if (state.authStatus == AuthStatus.unauthenticated) {
+          Navigator.of(context)
+              .pushAndRemoveUntil(LoginScreen.route(), (route) => false);
+        } else if (state.authStatus == AuthStatus.authenticated) {
+          Navigator.of(context)
+              .pushAndRemoveUntil(HomeScreen.route(), (route) => false);
+        }
+      },
+      child: child,
+    );
   }
 }

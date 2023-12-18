@@ -23,7 +23,10 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       if (user == null) {
         add(const AppLoggedOut());
       } else {
-        add(AppTodoItemsRequested(user.id));
+        // Load users todo list once authstate changes for user 
+        if (user.id.isNotEmpty) {
+          add(AppTodoItemsRequested(user.id));
+        }
         add(AppLoggedIn(user));
       }
     });

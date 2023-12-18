@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/bloc/app_bloc.dart';
 import 'package:todo/cubit/cubit.dart';
-import 'package:todo/view/app_view.dart';
+import 'package:todo/view/screens/login.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -48,7 +48,8 @@ class HomeScreen extends StatelessWidget {
               );
             }
           },
-          child: const ListenForAuthStatusChange(child: _TaskListBuilder()),
+          child:
+              const _ListenForUnAuthenticatedState(child: _TaskListBuilder()),
         ),
       ),
     );
@@ -217,6 +218,27 @@ class _TaskField extends StatelessWidget {
       onChanged: (value) {
         context.read<TaskCubit>().updateTask(value);
       },
+    );
+  }
+}
+
+class _ListenForUnAuthenticatedState extends StatelessWidget {
+  const _ListenForUnAuthenticatedState({required this.child});
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AppBloc, AppState>(
+      listenWhen: (prev, curr) =>
+          prev.authStatus != curr.authStatus &&
+          curr.authStatus == AuthStatus.unauthenticated,
+      listener: (context, state) {
+        if (state.authStatus == AuthStatus.unauthenticated) {
+          Navigator.of(context)
+              .pushAndRemoveUntil(LoginScreen.route(), (route) => false);
+        }
+      },
+      child: child,
     );
   }
 }
