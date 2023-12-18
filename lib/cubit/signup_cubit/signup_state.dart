@@ -1,27 +1,31 @@
 part of 'signup_cubit.dart';
 
-enum SignupStatus { initial, submitting, success, error }
+enum SignupStatus { initial, submitting, success, failure }
 
 class SignupState extends Equatable {
   const SignupState({
     required this.email,
     required this.password,
     required this.status,
+    this.error,
   });
 
   final String email;
   final String password;
   final SignupStatus status;
+  final Object? error;
 
   SignupState copyWith({
     String? email,
     String? password,
     SignupStatus? status,
+    Object? error,
   }) {
     return SignupState(
       email: email ?? this.email,
       password: password ?? this.password,
       status: status ?? this.status,
+      error: error ?? this.error,
     );
   }
 
@@ -30,6 +34,7 @@ class SignupState extends Equatable {
         email,
         password,
         status,
+        error ?? '',
       ];
 }
 

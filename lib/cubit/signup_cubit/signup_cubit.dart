@@ -26,7 +26,7 @@ class SignupCubit extends Cubit<SignupState> {
           email: state.email, password: state.password);
       emit(state.copyWith(status: SignupStatus.success, email: '', password: ''));
     } catch (e) {
-      emit(state.copyWith(status: SignupStatus.error));
+      emit(state.copyWith(status: SignupStatus.failure, error: e));
     }
   }
 }

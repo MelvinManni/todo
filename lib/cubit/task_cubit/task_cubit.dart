@@ -26,7 +26,7 @@ class TaskCubit extends Cubit<TaskState> {
       emit(const TaskState(task: '', status: TaskStatus.success,));
       return todoItem;
     } catch (e) {
-      emit(TaskState(task: task, status: TaskStatus.error));
+      emit(TaskState(task: task, status: TaskStatus.failure, error: e));
     }
     return null;
   }
