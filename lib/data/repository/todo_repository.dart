@@ -11,10 +11,11 @@ class TodoRepository {
     final docSnapshot = await _firestore
         .collection('users')
         .doc(userId)
-        .collection('todos').get();
-
-    final todos =
-        docSnapshot.docs.map((doc) => TodoItem.fromData(doc.data())).toList();
+        .collection('todos')
+        .get();
+    final todos = docSnapshot.docs
+        .map((doc) => TodoItem.fromData({...doc.data(), "id": doc.id}))
+        .toList();
 
     return todos;
   }
@@ -27,6 +28,7 @@ class TodoRepository {
         .add({'task': task, 'user': userId});
 
     final doc = docRef.id;
+
     return TodoItem(id: doc, user: userId, task: task);
   }
 

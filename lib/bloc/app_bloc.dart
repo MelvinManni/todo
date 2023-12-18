@@ -23,7 +23,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       if (user == null) {
         add(const AppLoggedOut());
       } else {
-        add(const AppTodoItemsRequested());
+        add(AppTodoItemsRequested(user.id));
         add(AppLoggedIn(user));
       }
     });
@@ -42,7 +42,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       emit(state.copyWith(status: Status.loading));
 
       await _todoRepository
-          .todos(userId: state.user.id)
+          .todos(userId: event.user)
           .then((value) =>
               {emit(state.copyWith(status: Status.success, todos: value))})
           .onError((error, stackTrace) =>
@@ -55,7 +55,7 @@ class AppBloc extends Bloc<AppEvent, AppState> {
     on<AppTodoItemDeleted>((event, emit) async {
       emit(state.copyWith(status: Status.loading));
       await _todoRepository
-          .delete(userId: state.user.id, todoId: event.todoItem.id)
+          .delete(userId: event.todoItem.user, todoId: event.todoItem.id)
           .then((value) => {
                 emit(state.copyWith(
                     status: Status.success,

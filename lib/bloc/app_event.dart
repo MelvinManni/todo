@@ -24,7 +24,10 @@ final class AppLoggedOut extends AppEvent {
 }
 
 final class AppTodoItemsRequested extends AppEvent {
-  const AppTodoItemsRequested();
+  final String user;
+  const AppTodoItemsRequested(
+    this.user,
+  );
 }
 
 final class AppTodoItemAdded extends AppEvent {
