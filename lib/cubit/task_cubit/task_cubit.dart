@@ -6,7 +6,7 @@ import 'package:todo/data/repository/repository.dart';
 part 'task_state.dart';
 
 class TaskCubit extends Cubit<TaskState> {
-  TodoRepository _todoRepository;
+  final TodoRepository _todoRepository;
   TaskCubit({
     required TodoRepository todoRepository,
   })  : _todoRepository = todoRepository,
@@ -23,7 +23,7 @@ class TaskCubit extends Cubit<TaskState> {
     emit(TaskState(task: task, status: TaskStatus.submitting));
     try {
       final todoItem = await _todoRepository.add(userId: userId, task: task);
-      emit(TaskState(task: task, status: TaskStatus.success));
+      emit(const TaskState(task: '', status: TaskStatus.success));
       return todoItem;
     } catch (e) {
       emit(TaskState(task: task, status: TaskStatus.error));

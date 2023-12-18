@@ -19,12 +19,14 @@ class AppState extends Equatable {
     this.status,
     this.user = User.empty,
     this.todoItems = const [],
+    this.error,
   });
 
   final AuthStatus authStatus;
   final Status? status;
   final User user;
   final List<TodoItem> todoItems;
+  final Object? error;
 
   @override
   List<Object> get props => [
@@ -32,15 +34,17 @@ class AppState extends Equatable {
         status ?? Status.initial,
         user,
         todoItems,
+        error ?? '',
       ];
 
   AppState copyWith(
-      {required Status status, List<TodoItem>? todos}) {
+      {required Status status, List<TodoItem>? todos, Object? error}) {
     return AppState(
       authStatus: authStatus,
       status: status,
       user: user,
       todoItems: todos ?? todoItems,
+      error: error ?? error,
     );
   }
 }

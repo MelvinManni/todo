@@ -7,17 +7,16 @@ class TodoRepository {
   TodoRepository({FirebaseFirestore? firestore})
       : _firestore = firestore ?? FirebaseFirestore.instance;
 
-  Stream<List<TodoItem>> todos({required String userId}) {
-    return _firestore
+  Future<List<TodoItem>> todos({required String userId}) async {
+    final docSnapshot = await _firestore
         .collection('users')
         .doc(userId)
-        .collection('todos')
-        .snapshots()
-        .map((snapshot) {
-      return snapshot.docs
-          .map((doc) => TodoItem.fromData({...doc.data(), "id": doc.id}))
-          .toList();
-    });
+        .collection('todos').get();
+
+    final todos =
+        docSnapshot.docs.map((doc) => TodoItem.fromData(doc.data())).toList();
+
+    return todos;
   }
 
   Future<TodoItem> add({required String userId, required String task}) async {
