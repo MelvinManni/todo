@@ -1,12 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo/cubit/login_cubit/login_cubit.dart';
+import 'package:todo/data/repository/repository.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
+  static Route route() {
+    return MaterialPageRoute<void>(
+        builder: (_) => RepositoryProvider(
+              create: (context) => AuthRepository(),
+              child: BlocProvider(
+                create: (context) => LoginCubit(
+                  authRepository: context.read<AuthRepository>(),
+                ),
+                child: const LoginScreen(),
+              ),
+            ));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: const Text('Login'),
       ),

@@ -53,7 +53,13 @@ class MainApp extends StatelessWidget {
           authRepository: context.read<AuthRepository>(),
           todoRepository: context.read<TodoRepository>(),
         ),
-        child: const AppView(),
+        child: MaterialApp(
+          title: 'Todo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          home: const AppView(),
+        )
       ),
     );
   }

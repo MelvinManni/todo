@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/bloc/app_bloc.dart';
@@ -13,13 +12,7 @@ class AppView extends StatelessWidget {
     return BlocListener<AppBloc, AppState>(
       listener: (context, state) {
         if (state.authStatus == AuthStatus.unauthenticated) {
-          Navigator.of(context).pushAndRemoveUntil(
-              MaterialPageRoute(
-                  builder: (_) => BlocProvider.value(
-                        value: BlocProvider.of<AppBloc>(context),
-                        child: const LoginScreen(),
-                      )),
-              (route) => false);
+          Navigator.of(context).pushAndRemoveUntil(LoginScreen.route(), (route) => false);
         } else if (state.authStatus == AuthStatus.authenticated) {
           Navigator.of(context).pushAndRemoveUntil(
               MaterialPageRoute(
