@@ -23,22 +23,30 @@ class SignUpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Sign Up'),
-      ),
-      body: Center(
-          child: Column(
-        children: [
-          const _EmailField(),
-          const _PasswordField(),
-          TextButton(
-              onPressed: () {
-                context.read<SignupCubit>().signUpWithCredentials();
-              },
-              child: const Text("Sign Up"))
-        ],
-      )),
-    );
+        appBar: AppBar(
+          title: const Text('Sign Up'),
+        ),
+        body: GestureDetector(
+          onTap: () {
+            FocusManager.instance.primaryFocus?.unfocus();
+          },
+          child: SingleChildScrollView(
+            child: Padding(
+                padding:
+                    const EdgeInsets.symmetric(vertical: 10.0, horizontal: 20),
+                child: Column(
+                  children: [
+                    const _EmailField(),
+                    const _PasswordField(),
+                    TextButton(
+                        onPressed: () {
+                          context.read<SignupCubit>().signUpWithCredentials();
+                        },
+                        child: const Text("Sign Up"))
+                  ],
+                )),
+          ),
+        ));
   }
 }
 
@@ -51,8 +59,9 @@ class _PasswordField extends StatelessWidget {
         context.select((SignupCubit cubit) => cubit.state.password);
     return TextFormField(
       obscureText: true,
-      decoration: InputDecoration(
-        labelText: password,
+      initialValue: password,
+      decoration: const InputDecoration(
+        labelText: "Password",
         hintText: 'Enter your password',
       ),
       onChanged: (value) => context.read<SignupCubit>().passwordChanged(value),
@@ -67,8 +76,9 @@ class _EmailField extends StatelessWidget {
   Widget build(BuildContext context) {
     final email = context.select((SignupCubit cubit) => cubit.state.email);
     return TextFormField(
-      decoration: InputDecoration(
-        labelText: email,
+      initialValue: email,
+      decoration: const InputDecoration(
+        labelText: "Email Address",
         hintText: 'Enter your email',
       ),
       onChanged: (value) => context.read<SignupCubit>().emailChanged(value),

@@ -49,18 +49,22 @@ class MainApp extends StatelessWidget {
         ),
       ],
       child: BlocProvider(
-        create: (context) => AppBloc(
-          authRepository: context.read<AuthRepository>(),
-          todoRepository: context.read<TodoRepository>(),
-        ),
-        child: MaterialApp(
-          title: 'Todo',
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          home: const AppView(),
-        )
-      ),
+          create: (context) => AppBloc(
+                authRepository: context.read<AuthRepository>(),
+                todoRepository: context.read<TodoRepository>(),
+              ),
+          child: MaterialApp(
+            title: 'Todo',
+            theme: ThemeData(
+              primarySwatch: Colors.blue,
+            ),
+            home: GestureDetector(
+              onTap: () {
+                FocusManager.instance.primaryFocus?.unfocus();
+              },
+              child: const AppView(),
+            ),
+          )),
     );
   }
 }
