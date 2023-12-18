@@ -86,18 +86,17 @@ class AddTaskFLoatButton extends StatelessWidget {
 }
 
 class _AddTaskButton extends StatelessWidget {
-  const _AddTaskButton({
-    super.key,
-  });
+  const _AddTaskButton();
 
   @override
   Widget build(BuildContext context) {
-    final task = context.select((TaskState state) => state.task);
+    final task = context.select((AppState state) => state.user);
+    print(task);
     return ElevatedButton(
         onPressed: () {
           context
               .read<AppBloc>()
-              .add(AppTodoItemAdded(TodoItem(task: task)));
+              .add(AppTodoItemAdded(TodoItem(task: "task")));
           Navigator.of(context).pop();
         },
         child: const Text("Add"));
@@ -105,15 +104,13 @@ class _AddTaskButton extends StatelessWidget {
 }
 
 class _TaskField extends StatelessWidget {
-  const _TaskField({
-    super.key,
-  });
+  const _TaskField();
 
   @override
   Widget build(BuildContext context) {
-    final task = context.select((TaskState state) => state.task);
+    // final task = context.select((TaskState state) => state.task);
     return TextFormField(
-      initialValue: task,
+      // initialValue: task,
       decoration: const InputDecoration(
         labelText: "Task",
         hintText: 'Enter your task',

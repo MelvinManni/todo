@@ -12,14 +12,15 @@ part 'app_state.dart';
 class AppBloc extends Bloc<AppEvent, AppState> {
   final AuthRepository _authRepository;
   final TodoRepository _todoRepository;
-  StreamSubscription? _authSubscription;
+
   AppBloc(
       {required AuthRepository authRepository,
       required TodoRepository todoRepository})
       : _authRepository = authRepository,
         _todoRepository = todoRepository,
         super(const AppInitial()) {
-    _authSubscription = _authRepository.user.listen((user) {
+    
+    _authRepository.user.listen((user) {
       if (user == null) {
         add(const AppLoggedOut());
       } else {
@@ -54,9 +55,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
           .onError((error, stackTrace) =>
               {emit(state.copyWith(status: Status.failure))});
     });
-    on<AppTodoItemDeleted>((event, emit) {
+    on<AppTodoItemDeleted>((event, emit) async {
       emit(state.copyWith(status: Status.loading));
-      _todoRepository
+      await _todoRepository
           .delete(userId: state.user.id, todoId: event.todoItem.id)
           .then((value) => {
                 emit(state.copyWith(

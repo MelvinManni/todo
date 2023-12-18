@@ -2,6 +2,8 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:todo/bloc/app_bloc.dart';
+import 'package:todo/cubit/cubit.dart';
 import 'package:todo/cubit/login_cubit/login_cubit.dart';
 import 'package:todo/data/repository/repository.dart';
 import 'package:todo/view/app_view.dart';
@@ -11,8 +13,12 @@ class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
   static Route route() {
     return MaterialPageRoute<void>(
-      builder: (context) => BlocProvider.value(
-        value: BlocProvider.of<LoginCubit>(context),
+      builder: (context) =>  MultiBlocProvider(
+        providers: [
+          BlocProvider.value(value: BlocProvider.of<AppBloc>(context)),
+          BlocProvider.value(value: BlocProvider.of<TaskCubit>(context)),
+          BlocProvider.value(value: BlocProvider.of<LoginCubit>(context),),
+        ],
         child: const LoginScreen(),
       ),
     );
