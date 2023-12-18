@@ -19,7 +19,6 @@ class AppBloc extends Bloc<AppEvent, AppState> {
       : _authRepository = authRepository,
         _todoRepository = todoRepository,
         super(const AppInitial()) {
-    
     _authRepository.user.listen((user) {
       if (user == null) {
         add(const AppLoggedOut());
@@ -44,16 +43,9 @@ class AppBloc extends Bloc<AppEvent, AppState> {
         emit(state.copyWith(status: Status.success, todos: todos));
       });
     });
-    on<AppTodoItemAdded>((event, emit) async {
-      emit(state.copyWith(status: Status.loading));
-      await _todoRepository
-          .add(userId: state.user.id, todo: event.task)
-          .then((value) => {
-                emit(state.copyWith(
-                    status: Status.success, todos: [...state.todoItems, value]))
-              })
-          .onError((error, stackTrace) =>
-              {emit(state.copyWith(status: Status.failure))});
+    on<AppTodoItemAdded>((event, emit) {
+      emit(state.copyWith(
+          status: Status.success, todos: [...state.todoItems, event.todoItem]));
     });
     on<AppTodoItemDeleted>((event, emit) async {
       emit(state.copyWith(status: Status.loading));

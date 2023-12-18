@@ -66,7 +66,10 @@ class MainApp extends StatelessWidget {
               authRepository: context.read<AuthRepository>(),
             ),
           ),
-          BlocProvider(create: (context) => TaskCubit()),
+          BlocProvider(
+              create: (context) => TaskCubit(
+                    todoRepository: context.read<TodoRepository>(),
+                  )),
         ],
         child: MaterialApp(
           title: 'Todo',

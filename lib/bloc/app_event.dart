@@ -28,11 +28,11 @@ final class AppTodoItemsRequested extends AppEvent {
 }
 
 final class AppTodoItemAdded extends AppEvent {
-  final TodoItem task;
-  const AppTodoItemAdded(this.task);
+  final TodoItem todoItem;
+  const AppTodoItemAdded(this.todoItem);
 
   @override
-  List<Object> get props => [task];
+  List<Object> get props => [todoItem];
 }
 
 final class AppTodoItemDeleted extends AppEvent {

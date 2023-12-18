@@ -20,15 +20,15 @@ class TodoRepository {
     });
   }
 
-  Future<TodoItem> add({required String userId, required TodoItem todo}) async {
+  Future<TodoItem> add({required String userId, required String task}) async {
     final docRef = await _firestore
         .collection('users')
         .doc(userId)
         .collection('todos')
-        .add(todo.toData());
+        .add({'task': task, 'user': userId});
 
     final doc = docRef.id;
-    return TodoItem(id: doc, user: userId, task: todo.task);
+    return TodoItem(id: doc, user: userId, task: task);
   }
 
   Future<void> delete({required String userId, required String todoId}) async {
