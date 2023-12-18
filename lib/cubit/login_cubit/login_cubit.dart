@@ -24,7 +24,7 @@ class LoginCubit extends Cubit<LoginState> {
     try {
       await _authRepository.signInWithCredentials(
           email: state.email, password: state.password);
-      emit(state.copyWith(status: LoginStatus.success));
+      emit(state.copyWith(status: LoginStatus.success, email: '', password: ''));
     } catch (e) {
       emit(state.copyWith(status: LoginStatus.error));
     }

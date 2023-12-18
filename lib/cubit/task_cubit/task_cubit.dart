@@ -23,7 +23,7 @@ class TaskCubit extends Cubit<TaskState> {
     emit(TaskState(task: task, status: TaskStatus.submitting));
     try {
       final todoItem = await _todoRepository.add(userId: userId, task: task);
-      emit(const TaskState(task: '', status: TaskStatus.success));
+      emit(const TaskState(task: '', status: TaskStatus.success,));
       return todoItem;
     } catch (e) {
       emit(TaskState(task: task, status: TaskStatus.error));

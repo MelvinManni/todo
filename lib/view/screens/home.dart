@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/bloc/app_bloc.dart';
 import 'package:todo/cubit/cubit.dart';
+import 'package:todo/view/app_view.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -47,7 +48,7 @@ class HomeScreen extends StatelessWidget {
               );
             }
           },
-          child: const _TaskListBuilder(),
+          child: const ListenForAuthStatusChange(child: _TaskListBuilder()),
         ),
       ),
     );
