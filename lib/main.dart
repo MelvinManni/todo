@@ -2,6 +2,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/bloc/app_bloc.dart';
+import 'package:todo/cubit/cubit.dart';
 import 'package:todo/data/repository/repository.dart';
 import 'package:todo/firebase_options.dart';
 import 'package:todo/view/app_view.dart';
@@ -48,11 +49,23 @@ class MainApp extends StatelessWidget {
           create: (context) => TodoRepository(),
         ),
       ],
-      child: BlocProvider(
-          create: (context) => AppBloc(
+      child: MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => AppBloc(
                 authRepository: context.read<AuthRepository>(),
                 todoRepository: context.read<TodoRepository>(),
               ),
+            ),
+            BlocProvider(
+                create: (context) => LoginCubit(
+                      authRepository: context.read<AuthRepository>(),
+                    )),
+            BlocProvider(
+                create: (context) => SignupCubit(
+                      authRepository: context.read<AuthRepository>(),
+                    )),
+          ],
           child: MaterialApp(
             title: 'Todo',
             theme: ThemeData(

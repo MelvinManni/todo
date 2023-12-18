@@ -2,22 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:todo/cubit/signup_cubit/signup_cubit.dart';
-import 'package:todo/data/repository/repository.dart';
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen({super.key});
 
   static Route route() {
     return MaterialPageRoute<void>(
-        builder: (_) => RepositoryProvider(
-              create: (context) => AuthRepository(),
-              child: BlocProvider(
-                create: (context) => SignupCubit(
-                  authRepository: context.read<AuthRepository>(),
-                ),
-                child: const SignUpScreen(),
-              ),
-            ));
+      builder: (context) => BlocProvider.value(
+        value: BlocProvider.of<SignupCubit>(context),
+        child: const SignUpScreen(),
+      ),
+    );
   }
 
   @override

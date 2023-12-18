@@ -2,7 +2,6 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutterfire_ui/auth.dart';
 import 'package:todo/cubit/login_cubit/login_cubit.dart';
 import 'package:todo/data/repository/repository.dart';
 import 'package:todo/view/screens/signup.dart';
@@ -11,15 +10,11 @@ class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
   static Route route() {
     return MaterialPageRoute<void>(
-        builder: (_) => RepositoryProvider(
-              create: (context) => AuthRepository(),
-              child: BlocProvider(
-                create: (context) => LoginCubit(
-                  authRepository: context.read<AuthRepository>(),
-                ),
-                child: const LoginScreen(),
-              ),
-            ));
+      builder: (context) => BlocProvider.value(
+        value: BlocProvider.of<LoginCubit>(context),
+        child: const LoginScreen(),
+      ),
+    );
   }
 
   @override
@@ -56,7 +51,9 @@ class LoginScreen extends StatelessWidget {
                           style: const TextStyle(color: Colors.blue),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              Navigator.of(context).push(SignUpScreen.route());
+                              Navigator.of(context).push(
+                                SignUpScreen.route(),
+                              );
                             })
                     ]))
               ],
